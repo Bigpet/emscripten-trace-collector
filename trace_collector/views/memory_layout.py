@@ -22,6 +22,6 @@ class MemoryLayoutData(object):
     self.stack_base = data['stack_base']
     self.stack_top = data['stack_top']
     self.stack_max = data['stack_max']
-    self.dynamic_base = data['dynamic_base']
+    self.dynamic_base = data['dynamic_base'] if 'dynamic_base' in data else self.stack_base
     self.dynamic_top = data['dynamic_top']
     self.total_memory = data['total_memory']

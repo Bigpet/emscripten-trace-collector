@@ -63,12 +63,12 @@
     {% if memory_layout.current %}
     currentMemoryLayoutData.addRows([
       ['Stack', {
-        v: {{ memory_layout.current.stack_top - memory_layout.current.stack_base }},
-        f: '{{ (memory_layout.current.stack_top - memory_layout.current.stack_base)|filesizeformat(True) }}'
+        v: {{ memory_layout.current.stack_base - memory_layout.current.stack_top }},
+        f: '{{ (memory_layout.current.stack_base - memory_layout.current.stack_top )|filesizeformat(True) }}'
       }],
       ['Available Stack', {
-        v: {{ memory_layout.current.stack_max - memory_layout.current.stack_top }},
-        f: '{{ (memory_layout.current.stack_max - memory_layout.current.stack_top)|filesizeformat(True) }}'
+        v: {{ memory_layout.current.stack_top - memory_layout.current.stack_max }},
+        f: '{{ (memory_layout.current.stack_top - memory_layout.current.stack_max)|filesizeformat(True) }}'
       }],
       ['Dynamic', {
         v: {{ memory_layout.current.dynamic_top - memory_layout.current.dynamic_base }},
@@ -102,8 +102,9 @@
     {% for entry in memory_layout.snapshots %}
       [
         {v: {{ entry.timestamp }}, f: '{{ entry.timestamp|round(3) }}ms'},
-        {v: {{ entry.stack_top - entry.stack_base }},     f: '{{ (entry.stack_top - entry.stack_base)|filesizeformat(True) }}'},
-        {v: {{ entry.stack_max - entry.stack_top }},      f: '{{ (entry.stack_max - entry.stack_top)|filesizeformat(True) }}'},
+        {v: {{ entry.stack_max - entry.static_base }},     f: '{{ (entry.stack_max - entry.static_base)|filesizeformat(True) }}'},
+        {v: {{ entry.stack_base - entry.stack_top }},     f: '{{ (entry.stack_base - entry.stack_top)|filesizeformat(True) }}'},
+        {v: {{ entry.stack_top - entry.stack_max }},      f: '{{ (entry.stack_top - entry.stack_max)|filesizeformat(True) }}'},
         {v: {{ entry.dynamic_top - entry.dynamic_base }}, f: '{{ (entry.dynamic_top - entry.dynamic_base)|filesizeformat(True) }}'},
         {v: {{ entry.total_memory - entry.dynamic_top }}, f: '{{ (entry.total_memory - entry.dynamic_top)|filesizeformat(True) }}'}
       ],

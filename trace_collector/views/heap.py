@@ -104,7 +104,7 @@ class HeapView(object):
       d['average_storage_size_live'] = avg(d['total_storage_size_live'], d['count_live'])
     types = type_data.values()
     # Use negation to reverse the sort
-    types.sort(lambda x,y: cmp(-x['count_all'], -y['count_all']))
+    types = sorted(types,key=lambda x: -x['count_all'])
     if format == 'csv':
       csv_data = StringIO.StringIO()
       fields = [
@@ -146,15 +146,15 @@ class HeapView(object):
         d['count_live'] += 1
         d['bytes_live'] += e.size
     sizes = size_data.values()
-    sizes_sorted = sorted(sizes, cmp=lambda x,y: cmp(x['size'], y['size']))
-    return sizes
+    sizes_sorted = sorted(sizes, key=lambda x: x['size'])
+    return sizes_sorted
 
   def heap_fragmentation_data(self):
     allocations = self.entries_by_address.values()
     holes = []
     lastAllocationEnd = 0
     if len(allocations) > 1:
-      allocations.sort(lambda x,y: cmp(x.address, y.address))
+      allocations = sorted(allocations, key=lambda x: x.address)
       lastAllocationEnd = allocations[0].address
       for allocation in allocations:
         allocationStart = allocation.address
@@ -175,7 +175,7 @@ class HeapView(object):
       d['count'] += 1
       d['bytes'] += hole_size
     holes = hole_data.values()
-    holes.sort(lambda x,y: cmp(x['size'], y['size']))
+    holes = sorted(holes, key=lambda x: x['size'])
     return {
       'holes': holes,
       'fragmentation_percentage': (total_hole_size / float(lastAllocationEnd)) * 100,
