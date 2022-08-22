@@ -62,6 +62,10 @@
     currentMemoryLayoutData.addColumn('number', 'Bytes');
     {% if memory_layout.current %}
     currentMemoryLayoutData.addRows([
+      ['Static', {
+        v: {{ memory_layout.current.stack_max - memory_layout.current.static_base }},
+        f: '{{ (memory_layout.current.stack_max - memory_layout.current.static_base)|filesizeformat(True) }}'
+      }],
       ['Stack', {
         v: {{ memory_layout.current.stack_base - memory_layout.current.stack_top }},
         f: '{{ (memory_layout.current.stack_base - memory_layout.current.stack_top )|filesizeformat(True) }}'
